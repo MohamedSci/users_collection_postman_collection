@@ -1,0 +1,162 @@
+{
+	"info": {
+		"_postman_id": "b93910c4-463f-4565-8744-68627c007247",
+		"name": "users_collection",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "26439925"
+	},
+	"item": [
+		{
+			"name": "Get_All_Users",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"let jsonResonse = pm.response.json();\r",
+							"let per_page= jsonResonse.per_page;\r",
+							"let total= jsonResonse.total;\r",
+							"let total_pages= jsonResonse.total_pages;\r",
+							"\r",
+							"let users_data_list = jsonResonse.data;\r",
+							"\r",
+							"pm.test(\"retrieving_the_correct_number_of _users_Test\",function(){\r",
+							"if(per_page === users_data_list.length && per_page ===(total/total_pages)){\r",
+							"    return true;\r",
+							"}\r",
+							"});\r",
+							"\r",
+							"pm.test(\"AssignUserDataToCollectionVariables\",function(){\r",
+							"    pm.collectionVariables.set(\"id\",users_data_list[0][\"id\"]);\r",
+							"    pm.collectionVariables.set(\"email\",users_data_list[0][\"email\"]);\r",
+							"    pm.collectionVariables.set(\"first_name\",users_data_list[0][\"first_name\"]);\r",
+							"    pm.collectionVariables.set(\"last_name\",users_data_list[0][\"last_name\"]);\r",
+							"    pm.collectionVariables.set(\"avatar\",users_data_list[0][\"avatar\"]);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{url}}/api/users?page=2",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"api",
+						"users"
+					],
+					"query": [
+						{
+							"key": "page",
+							"value": "2"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Single_User",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"let jsonResonse = pm.response.json();\r",
+							"let userData= jsonResonse.data;\r",
+							"\r",
+							"pm.test(\"CheckTheResponseDataWithGet_All_UsersRequest\",function(){\r",
+							"pm.expect(pm.collectionVariables.get(\"id\")).to.eql(userData[\"id\"]);\r",
+							"pm.expect(pm.collectionVariables.get(\"email\")).to.eql(userData[\"email\"]);\r",
+							"pm.expect(pm.collectionVariables.get(\"first_name\")).to.eql(userData[\"first_name\"]);\r",
+							"pm.expect(pm.collectionVariables.get(\"last_name\")).to.eql(userData[\"last_name\"]);\r",
+							"pm.expect(pm.collectionVariables.get(\"avatar\")).to.eql(userData[\"avatar\"]);\r",
+							"\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{url}}/api/users/{{id}}",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"api",
+						"users",
+						"{{id}}"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "url",
+			"value": "https://reqres.in",
+			"type": "string"
+		},
+		{
+			"key": "id",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "email",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "first_name",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "last_name",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "avatar",
+			"value": "",
+			"type": "string"
+		}
+	]
+}
